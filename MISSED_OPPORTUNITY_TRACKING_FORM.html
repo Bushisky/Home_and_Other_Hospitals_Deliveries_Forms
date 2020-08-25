@@ -1,0 +1,176 @@
+<htmlform>
+	<!-- 
+====================================================================================================
+eMCHR Missed Opportunity Tracking Log
+  
+Created by: GEORGE BUSH ODHIAMBO - Dev eMCHR
+
+====================================================================================================         
+ -->
+	<macros>
+		paperFormId = (Fill this in)
+		headerColor =#009d8e
+		fontOnHeaderColor = white
+	</macros>
+	<style>
+		.section {
+			border: 1px solid $headerColor;
+			padding: 2px;
+			text-align: left;
+			margin-bottom: 1em;
+		}
+		.sectionHeader {
+			background-color: $headerColor;
+			color: $fontOnHeaderColor;
+			display: block;
+			padding: 2px;
+			font-weight: bold;
+		}
+		table.baseline-aligned td {
+			vertical-align: baseline;
+		}
+    table.moh406 {
+        border-collapse: collapse;
+    }
+    table.moh406 > tbody > tr > td, table.moh257 > tbody > tr > th {
+        border: 1px solid black;
+        vertical-align: baseline;
+        padding: 4px;
+        text-align: left;
+
+
+}
+td.header {
+			border: 1px solid black;
+			background-color: grey;
+			width: 7%;
+}
+		td.data {
+			border: 1px solid black;
+			text-align: left;
+		}
+		#rotate_text
+		{
+		 	id: rot_text;
+			width:130px;
+		  	height:100px;
+		  	-ms-transform:rotate(270deg); /* IE 9 */
+		  	-moz-transform:rotate(270deg); /* Firefox */
+		  	-webkit-transform:rotate(270deg); /* Safari and Chrome */
+			-o-transform:rotate(270deg); /* Opera */
+}
+.tooltip{
+	margin:8px;
+	padding:8px;
+	border:1px solid blue;
+	background-color:yellow;
+	position: absolute;
+	z-index: 2;
+}
+	</style>
+	<h2>MISSED OPPORTUNITY TRACKING LOG (v1.O)</h2>
+
+	<section headerLabel="1. Encounter Details">
+		<table class="baseline-aligned">
+			<tr>
+				<td><div id="date_of_visit_SOP">Date:<encounterDate id="encounter_date" default="today"/> </div></td>
+				<td>Facility Name:<encounterLocation default="150"/></td>
+				<td>Provider:<encounterProvider default="currentUser" role="Provider" type="autocomplete" id="provider"/></td>
+				
+			</tr>
+	
+		</table>
+	</section>
+		<section headerLabel="2. Patient Details">
+		<table class="baseline-aligned">
+	
+		<tr>
+				<td><div id="date_of_visit_SOP"><h3>Date:</h3><encounterDate id="encounter_date" default="today" allowFutureDates="true"/> </div></td>
+				<td> <h3>Patient Name:</h3><lookup class="value" expression="patient.personName"/></td>
+				<td><div id="dob_SOP"><h3>Date of Birth:</h3> <lookup class="value" complexExpression="#if( \$patient.birthdateEstimated ) #end"/> 
+                                                         <lookup class="value" id= "DOB" expression="patient.birthdate"/></div>
+					                  (Age: <lookup class="value" expression="patient.age" id="patient_age"/>)
+									  </td>
+									 <td><h3>Patient ID(s):</h3><lookup class="value" expression="patient.getPatientIdentifiers(7)"/></td>
+									 <td><h3>Phone Number:</h3></td><td><obs conceptId="1459"/></td>
+			</tr>
+			</table>
+		</section>		
+
+	<section headerLabel="2. Missed Opportunity">
+		<table class="baseline-aligned">
+								 
+			<tr>
+				 <td><h3>Services Missed:</h3></td>
+				 <td class="data">   <lookup expression="fn.latestObs(7855).valueCoded.name" class="value"/>
+				 <obs conceptId="7855" id="IPT1" answerConceptId="7201" answerLabel="IPT1"/><br/>
+				 <obs conceptId="7855" id="IPT2" answerConceptId="7407" answerLabel="IPT2"/><br/>
+				 <obs conceptId="7855" id="IPT3" answerConceptId="7408" answerLabel="IPT3"/><br/>
+				 <obs conceptId="7855" id="HEMOGLOBIN" answerConceptId="21" answerLabel="HB"/><br/>
+	             <obs conceptId="7855" id="VDLR" answerConceptId="299" answerLabel="VDLR"/><br/>
+				 <obs conceptId="7855" id="FAMILY_PLANNING" answerConceptId="5271" answerLabel="FAMILY PLANNING"/><br/>
+				 <obs conceptId="7855" id="FERROUS_SULPHATE" answerConceptId="256" answerLabel="FERROUS_SULPHATE"/><br/>
+				 <obs conceptId="7855" id="PENTA1" answerConceptId="6938" answerLabel="PENTA 1"/><br/>
+				 <obs conceptId="7855" id="PENTA2" answerConceptId="6939" answerLabel="PENTA 2"/><br/>
+				 <obs conceptId="7855" id="PENTA3" answerConceptId="6937" answerLabel="PENTA 3"/><br/>
+				 </td>
+			</tr>
+			<tr>
+			<td><h3>Date Traced:</h3></td><td><encounterDate default = "today" allowFutureDates="true"/></td>
+			</tr>
+			<tr>
+			<td><h3>Date Expected:</h3></td><td><encounterDate default = "today" allowFutureDates="true"/></td>
+			</tr>
+			
+			<tr>
+			<td><h3>Mode of Tracking:</h3></td><td><obs conceptId="7856" answerConceptIds="6623,6231,6227" answerLabels="PHONE CALL,SMS, HOME VISIT"/></td>
+			</tr>
+			<tr>
+			<td><h3>Remarks:</h3></td>
+			<td><obs conceptId="7047" rows="4" cols="50"/></td>
+			</tr>
+			<tr>
+			<td><h3>Outcome Remarks:</h3></td>
+			<td><obs conceptId="7047" rows="4" cols="50"/></td>
+			</tr>
+			
+		</table>
+	</section>
+
+	<submit/>
+
+<!-- END OF FORM
+
+Simple examples to copy-and-paste. Full reference at http://wiki.openmrs.org/x/kg8z
+
+SECTION
+	<section headerLabel="\#. Title">
+		Content
+	</section>
+
+NUMERIC OBSERVATION
+	<obs conceptId="id-of-numeric-concept" labelText="Label before"/>
+
+DATE OBSERVATION
+	<obs conceptId="id-of-date-concept" labelText="Label before"/>
+
+CODED OBSERVATION
+(as a dropdown)
+	<obs conceptId="id-of-coded-concept" labelText="Label before"/>
+(as radio buttons)
+	<obs conceptId="id-of-coded-concept" labelText="Label before" style="radio"/>
+(as an autocomplete)
+	<obs conceptId="id-of-coded-concept" labelText="Label before" style="autocomplete" answerClasses="Diagnosis"/>
+(as a checkbox for a specific answer)
+	<obs conceptId="id-of-coded-concept" labelText="Label before" answerConceptId="id-of-answer-concept" answerLabel="label for answer"/>
+(as a dropdown with specific choices)
+	<obs conceptId="id-of-coded-concept" labelText="Label before" answerConceptIds="concept-id-1,concept-id-2,concept-id-3" answerLabels="Label 1,Label 2, Label 3"/>
+
+
+FREE TEXT OBSERVATION
+(as a normal text field)
+	<obs conceptId="id-of-text-concept" labelText="Label before"/>
+(as a textarea)
+	<obs conceptId="id-of-text-concept" labelText="Label before" rows="4" cols="80"/>
+-->
+</htmlform>
