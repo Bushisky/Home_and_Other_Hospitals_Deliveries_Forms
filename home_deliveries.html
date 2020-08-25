@@ -1,0 +1,196 @@
+<htmlform>
+<script type="text/javascript">
+
+    if(jQuery)
+    {
+        $j(document).ready(function() {
+			
+			
+			/*
+			@George Bush - When home delivery = No, Hide the hospital delivered
+			*/
+			var homeDeliveryCheckBoxYes=$j('#home_delivery').find("input[type='radio'][value=1065]");
+			var homeDeliveryCheckBoxNo=$j('#home_delivery').find("input[type='radio'][value=1066]");
+			var hospitalDeliveredDiv=$j('#hospital_delivered');
+			
+			homeDeliveryCheckBoxYes.click(function(){
+				if (homeDeliveryCheckBoxYes.attr('checked')==true)
+				{
+					//hospitalDeliveredDiv.removeAttr('hidden');
+					hospitalDeliveredDiv.attr('hidden','true');
+				}
+            });
+			//..
+			homeDeliveryCheckBoxNo.click(function(){
+				if (homeDeliveryCheckBoxNo.attr('checked')==true)
+				{
+					//hospitalDeliveredDiv.attr('hidden','true');
+					hospitalDeliveredDiv.removeAttr('hidden');
+				}
+            });  
+
+			
+        })
+    }
+
+</script>
+
+<style type="text/css">
+    #container {
+        width:800px;
+        margin-left:auto;
+        margin-right:auto;
+        margin-top:4px;
+        border:1px solid #0BF31C;
+        padding:1px;
+    }
+    /*#container .header, .client, .schedule,.checkin_status,.appointment,.incomplete-appointment,.clinic{
+        border-bottom:1px solid #666666;
+    }*/
+
+    #container fieldset{
+        margin-bottom:3px;
+        border:1px solid #0BF31C;
+    }
+    #container fieldset legend{
+        font-weight:normal;
+        font-size:16px;
+        background-color:#1C6665;
+        border:1px solid #1C6665;
+        color:#999999;
+    }
+
+    #container .clinic table td{
+        width:10%;
+        vertical-align:top;
+    }
+    #container .clinic table th{
+        text-align:left;
+        border:none;
+    }
+    #container .header{
+        margin-bottom:4px;
+    }
+
+    #container .header h2 {
+        text-align: center;
+        color:#0BF31C;
+    }
+
+    #container .header-title{
+        background-color:#1C6665;
+        border:1px solid #BFBFBF;
+    }
+    #container .client{
+
+    }
+    #container .client td {
+        height: 20px;
+    }
+
+    #container fieldset table{
+        font-size:90%;
+        width:100%;
+    }
+
+    a:link {
+    }
+
+
+    .submit {
+        float: right;
+    }
+
+    .endofform {
+        background-color: #CCC;
+        text-align: right;
+        font-family: Verdana, Geneva, sans-serif;
+    }
+
+    .bold{
+        font-size:11px;
+        font-weight:bold;
+    }
+</style>
+
+<div id="container">
+	<div class="header">
+		<div class="header-title">
+			<h2>Home and Other Hospital Deliveries</h2>
+		</div>
+	</div>
+
+	<div class="client">
+		<fieldset>
+			<legend>Encounter Details</legend>
+			<table >
+				<tr>
+					<td><div id="date_of_visit_SOP">Date:<encounterDate id="encounter_date" default="today"/> </div></td>
+					<td>Facility Name:<encounterLocation default="150"/></td>
+					<td>Provider:<encounterProvider default="currentUser" role="Provider" type="autocomplete" id="provider"/></td>
+					
+				</tr>
+		
+			</table>
+		</fieldset>
+	</div>
+	
+	<div class="client">
+		<fieldset>
+			<legend>Patient Details</legend>
+			<table >
+				<tr>
+					<td> Patient Name: <lookup class="value" expression="patient.personName"/></td>
+					<td> Date of Birth: <lookup class="value" complexExpression="#if( \$patient.birthdateEstimated ) #end"/> <lookup class="value" id= "DOB" expression="patient.birthdate"/></td> 
+					<td> Age: <lookup class="value" expression="patient.age" id="patient_age"/></td>
+					<td>Antenatal ID: <lookup class="value" expression="patient.getPatientIdentifier(7)"/>  </td>
+					<td>Contacts: [ <lookup class="value" expression="personAttributes.get('Phone Number')"/>, <lookup expression="patient.personAddress.address1"/>, <lookup expression="patient.personAddress.address2"/>, <lookup expression="patient.personAddress.cityVillage"/> ]</td>                                                  
+				</tr>
+			</table>
+		</fieldset>
+	</div>		
+
+	<div class="client">
+		<fieldset>
+			<legend>Delivery Details</legend>
+			<table>			 
+				<tr>
+					 <td width="30%">Home Delivery?</td> 
+					 <td><obs id="home_delivery" conceptId="7873" answerConceptIds="1065,1066" answerLabels= "1-Yes,2-No" style="radio"/></td>
+				</tr>
+				<tr>
+					 <td>Hospital Delivered:</td>
+					 <td>
+						<div id="hospital_delivered">
+							<obs conceptId="7874" rows="1" cols="38"/>
+						</div>
+					</td>
+					
+				</tr>
+				<tr>
+				<td>Date of Birth:</td> <td><obs conceptId="7875"/></td><td>Status of Baby:</td><td><obs conceptId="7487" answerConceptIds="6847,7489,7490" answerLabels="LIVE BIRTH,Macerated Stillbirth,Fresh still birth" style="dropdown"/></td>
+				</tr>
+				<tr>
+				<td>Sex:</td><td><obs conceptId="6538" answerConceptIds="7080,7081" answerLabels="MALE,FEMALE" style="radio"/></td>
+				</tr>
+				<tr>
+				<td>Mode of Delivery:</td><td><obs conceptId="5630" answerConceptIds="1170,1171,1172,1645" answerLabels="SPONTANEOUS VAGINAL DELIVERY,CESAREAN SECTION,BREECH DELIVERY,FORCEPS ASSISTED VAGINAL DELIVERY" style="dropdown"/></td>
+				</tr>
+				<tr>
+				<td>Condition after Delivery:</td><td><obs conceptId="7484" answerConceptIds="6600,6616" answerLabels="PATIENT ALIVE,PATIENT DEAD" style="radio"/></td>
+				</tr>
+			</table>
+		</fieldset>
+	</div>
+
+	<table width="100%">
+		<tr>
+			<td style="text-align:center;" colspan="3">
+				<div class="ke-form-buttons">
+					<br/><submit/>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+</htmlform>
